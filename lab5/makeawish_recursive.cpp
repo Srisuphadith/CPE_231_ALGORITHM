@@ -1,60 +1,32 @@
 #include <iostream>
-using namespace std;
-int maxx = 0;
+#include <vector>
+#include <algorithm>  // For std::max
 
-void wish(int arr[], int l, int r)
-{
-    if (r > 1)
-    {
-        int sum = 0;
-        int s_a = (r / 2) - l, s_b = r - (r / 2), tmp = 0;
-        int a[s_a];
-        int b[s_b];
-        for (int i = 0; i < s_a; i++)
-        {
-            a[i] = arr[tmp];
-            sum += arr[tmp];
-            tmp++;
-        }
-        if (sum > maxx)
-        {
-            maxx = sum;
-        }
-        sum = 0;
-        for (int i = 0; i < s_b; i++)
-        {
-            b[i] = arr[tmp];
-            sum += arr[tmp];
-            tmp++;
-        }
-        if (sum > maxx)
-        {
-            maxx = sum;
-        }
-        sum = 0;
-        for (int i = 0; i <= r; i++)
-        {
-            sum += arr[i];
-        }
-        if (sum > maxx)
-        {
-            maxx = sum;
-        }
-        wish(a, 0, s_a - 1);
-        wish(b, 0, s_b - 1);
+using namespace std;
+
+int maxWishSum(const vector<int>& wishValues) {
+    int maxSum = wishValues[0];
+    int currentSum = wishValues[0];
+
+    for (size_t i = 1; i < wishValues.size(); i++) {
+        // Either continue the current subarray or start a new one
+        currentSum = max(wishValues[i], currentSum + wishValues[i]);
+        maxSum = max(maxSum, currentSum);
     }
+
+    return maxSum;
 }
 
-int main()
-{
+int main() {
     int n;
     cin >> n;
-    int arr[n];
-
-    for (int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
+    vector<int> wishValues(n);
+    for (int i = 0; i < n; i++) {
+        cin >> wishValues[i];
     }
-    wish(arr, 0, n - 1);
-    cout << maxx;
+
+    int maxWish = maxWishSum(wishValues);
+    cout << maxWish << endl;
+
+    return 0;
 }
